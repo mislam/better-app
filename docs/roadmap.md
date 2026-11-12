@@ -45,25 +45,6 @@ These better-saas pieces do not get a milestone here: auth secret, Postgres, ema
 
 ## Now
 
-### M4 — `feat(android): add app`
-
-**Already exists:** the iOS app and its README commands. No root `package.json`, no CI, and no `.cursor/rules/`. Do not rewrite the iOS app.
-
-**Acceptance:**
-
-- [ ] Add a Gradle project under `apps/android/` by running the official Android CLI. Do not open Android Studio. Use the empty Compose activity template ([`android create`](https://developer.android.com/tools/agents/android-cli/commands/create)). Install the CLI from [Download Android CLI](https://developer.android.com/tools/agents/android-cli/download) when it is missing. Do not commit the CLI, and do not run `android init` to vendor an agent skill. Run `android create --list` and use the empty Compose activity template (`empty-activity` in the current docs). Record the template name if that list uses another name for the same template. Create it with `--name="Acme"`, `--application-id=com.example.acme`, `--namespace=com.example.acme`, `--min-sdk=26`, and `--output=apps/android`. Jetpack Compose only, via the Android Gradle Plugin and AndroidX Compose. Do not add Room, DataStore, a Navigation library, or a ViewModel. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy. `minSdk`, `compileSdk`, and `targetSdk` match `docs/engineering.md`. If the template’s `compileSdk` or `targetSdk` differs, change them to those pins.
-- [ ] Do not add a unit test. There is no screen behavior to test.
-- [ ] Wire `ktlint` as a build-time check, not as a library shipped in the app. Use the Gradle wrapper (`./gradlew`) so **M6** does not install a separate Gradle. Write the wrapper tasks for `ktlint` and the debug build in the README. No test task.
-- [ ] Append `.gitignore` rules for the local machine files and build outputs this project writes, including `local.properties`, `.gradle/`, module `build/` directories, and packaged apk/aab files. Commit the wrapper and project scripts. Do not add `.cursorignore` for these paths.
-- [ ] Add the Kotlin language extension to `.vscode/extensions.json` (marketplace id `fwcd.kotlin` unless that id has moved; then use the current Kotlin language extension and record the id).
-- [ ] Record Kotlin, Android Gradle Plugin, Compose, `ktlint`, and the Android CLI version in `docs/engineering.md` only.
-
-**Non-goals:** no third-party native SDK besides AndroidX Compose and the build-time `ktlint` plugin. No feature spec, no root `package.json`, no CI workflow, no Cursor rules. Do not start **M5**.
-
-**Close-out:** Prepend **M4** under **Shipped**. Move **M5** into **Now**. Delete this **M4** section.
-
-## Upcoming
-
 ### M5 — `chore: add commit hooks`
 
 **Already exists:** both apps. The README lists their format and build commands. No root `package.json`. No `.cursor/rules/`. No `docs/features/`, `shared/`, or `tools/`. Do not create those paths.
@@ -81,6 +62,8 @@ Use **npm** and commit `package-lock.json`. Do not adopt Bun. This is not a Java
 **Non-goals:** no app changes, no GitHub Actions, no Cursor rules. Do not start **M6**.
 
 **Close-out:** Prepend **M5** under **Shipped**. Move **M6** into **Now**. Delete this **M5** section.
+
+## Upcoming
 
 ### M6 — `ci: build both apps`
 

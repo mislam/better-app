@@ -3,3 +3,10 @@
 # iOS
 xcuserdata/
 *.xcuserstate
+
+# Android
+local.properties
+.gradle/
+*.apk
+*.aab
+build/

@@ -4,6 +4,12 @@
 
 ## Shipped
 
+### M4 — feat(android): add app
+
+- Add the Jetpack Compose Android app with an empty root view
+- Check with ktlint and build the debug apk
+- Ignore local Gradle files and recommend the Kotlin extension
+
 ### M3 — feat(ios): add app
 
 - Add the SwiftUI iOS app with an empty root view

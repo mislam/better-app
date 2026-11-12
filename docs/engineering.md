@@ -51,3 +51,8 @@ better-app/
 | iOS deployment target | 27.2 | Xcode 27.2 iOS App template |
 | Android `minSdk` | 26 | Android 8.0, set by this starter |
 | Android `compileSdk` and `targetSdk` | 36 | Android 16, [App compatibility in Android](https://developer.apple.com/guide/app-compatibility) |
+| Kotlin | 2.3.20 | `empty-activity` template; Compose compiler plugin uses this version |
+| Android Gradle Plugin | 9.0.1 | `empty-activity` template |
+| Compose | 2026.03.01 | AndroidX Compose BOM in the `empty-activity` template |
+| ktlint | 1.8.0 | `org.jlleitschuh.gradle.ktlint` 14.2.0 |
+| Android CLI | 1.1.16717390 | [Download Android CLI](https://developer.android.com/tools/agents/android-cli/download) |

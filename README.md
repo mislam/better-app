@@ -19,3 +19,10 @@ Team stays unset, so the build skips code signing.
 xcrun swift-format lint --strict --recursive apps/ios
 xcodebuild -project apps/ios/Acme.xcodeproj -scheme Acme -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
 ```
+
+## Android
+
+```sh
+apps/android/gradlew -p apps/android ktlintCheck
+apps/android/gradlew -p apps/android assembleDebug
+```
