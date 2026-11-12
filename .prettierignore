@@ -1,0 +1,9 @@
+# Package managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lock
+bun.lockb
+
+# Xcode asset catalogs
+apps/ios/**/*.xcassets/**
