@@ -45,34 +45,13 @@ These better-saas pieces do not get a milestone here: auth secret, Postgres, ema
 
 ## Now
 
-### M3 — `feat(ios): add app`
-
-**Already exists:** **M2** docs. No `apps/` yet. No root `package.json`, no CI, and no `.cursor/rules/`. Android is behind until **M4**. Do not add a feature spec or a note elsewhere.
-
-The user creates the Xcode project once. The session does not drive the Xcode app. If that project is not on disk yet, stop and ask them to create it, then ask where they saved it. Do not hand-write a project and do not use XcodeGen, Tuist, or `swift package init`.
-
-**Acceptance:**
-
-- [ ] The user’s project is Xcode’s iOS App template ([Creating an Xcode project for an app](https://developer.apple.com/documentation/xcode/creating-an-xcode-project-for-an-app)): File > New > Project, iOS, App. Product Name `BetterApp`. Organization Identifier `com.example`. Interface SwiftUI. Language Swift. Storage None. Testing System None. Leave Team unset. They may save it anywhere. Move it under `apps/ios/` if it is not already there. Target and scheme `BetterApp`, display name **Better App**, bundle id `com.example.betterapp`. The root view is empty. Delete sample text the template inserts, including “Hello, world!”. Do not add a title, a platform line, or any other copy.
-- [ ] Do not add a test target. There is no screen behavior to test.
-- [ ] Wire an Apple `swift-format` lint check (not SwiftLint or another third-party formatter). Write the `swift-format` command and the `xcodebuild` build command in the README, including the project, scheme, and destination `generic/platform=iOS`. Build only. No test action and no simulator name.
-- [ ] Append `.gitignore` rules for the user-specific Xcode data and build products this project writes. Commit the project, shared scheme, and sources. Do not add `.cursorignore` for these paths.
-- [ ] Add `.vscode/extensions.json` recommending the official Swift extension (`swiftlang.swift-vscode`). If the marketplace id has changed, use the extension published by the Swift project and record that id.
-- [ ] Record any new version pin (Xcode, Swift, iOS deployment target if it differs from engineering) in `docs/engineering.md` only.
-
-**Non-goals:** no Android project, no feature spec, no third-party native SDK, no SPM packages beyond Apple’s SDKs, no root `package.json`, no CI workflow, no Cursor rules. Do not start **M4**.
-
-**Close-out:** Prepend **M3** under **Shipped**. Move **M4** into **Now**. Delete this **M3** section.
-
-## Upcoming
-
 ### M4 — `feat(android): add app`
 
 **Already exists:** the iOS app and its README commands. No root `package.json`, no CI, and no `.cursor/rules/`. Do not rewrite the iOS app.
 
 **Acceptance:**
 
-- [ ] Add a Gradle project under `apps/android/` by running the official Android CLI. Do not open Android Studio. Use the empty Compose activity template ([`android create`](https://developer.android.com/tools/agents/android-cli/commands/create)). Install the CLI from [Download Android CLI](https://developer.android.com/tools/agents/android-cli/download) when it is missing. Do not commit the CLI, and do not run `android init` to vendor an agent skill. Run `android create --list` and use the empty Compose activity template (`empty-activity` in the current docs). Record the template name if that list uses another name for the same template. Create it with `--name="Better App"`, `--application-id=com.example.betterapp`, `--namespace=com.example.betterapp`, `--min-sdk=26`, and `--output=apps/android`. Jetpack Compose only, via the Android Gradle Plugin and AndroidX Compose. Do not add Room, DataStore, a Navigation library, or a ViewModel. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy. `minSdk`, `compileSdk`, and `targetSdk` match `docs/engineering.md`. If the template’s `compileSdk` or `targetSdk` differs, change them to those pins.
+- [ ] Add a Gradle project under `apps/android/` by running the official Android CLI. Do not open Android Studio. Use the empty Compose activity template ([`android create`](https://developer.android.com/tools/agents/android-cli/commands/create)). Install the CLI from [Download Android CLI](https://developer.android.com/tools/agents/android-cli/download) when it is missing. Do not commit the CLI, and do not run `android init` to vendor an agent skill. Run `android create --list` and use the empty Compose activity template (`empty-activity` in the current docs). Record the template name if that list uses another name for the same template. Create it with `--name="Acme"`, `--application-id=com.example.acme`, `--namespace=com.example.acme`, `--min-sdk=26`, and `--output=apps/android`. Jetpack Compose only, via the Android Gradle Plugin and AndroidX Compose. Do not add Room, DataStore, a Navigation library, or a ViewModel. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy. `minSdk`, `compileSdk`, and `targetSdk` match `docs/engineering.md`. If the template’s `compileSdk` or `targetSdk` differs, change them to those pins.
 - [ ] Do not add a unit test. There is no screen behavior to test.
 - [ ] Wire `ktlint` as a build-time check, not as a library shipped in the app. Use the Gradle wrapper (`./gradlew`) so **M6** does not install a separate Gradle. Write the wrapper tasks for `ktlint` and the debug build in the README. No test task.
 - [ ] Append `.gitignore` rules for the local machine files and build outputs this project writes, including `local.properties`, `.gradle/`, module `build/` directories, and packaged apk/aab files. Commit the wrapper and project scripts. Do not add `.cursorignore` for these paths.
@@ -82,6 +61,8 @@ The user creates the Xcode project once. The session does not drive the Xcode ap
 **Non-goals:** no third-party native SDK besides AndroidX Compose and the build-time `ktlint` plugin. No feature spec, no root `package.json`, no CI workflow, no Cursor rules. Do not start **M5**.
 
 **Close-out:** Prepend **M4** under **Shipped**. Move **M5** into **Now**. Delete this **M4** section.
+
+## Upcoming
 
 ### M5 — `chore: add commit hooks`
 

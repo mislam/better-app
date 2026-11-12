@@ -4,6 +4,12 @@
 
 ## Shipped
 
+### M3 — feat(ios): add app
+
+- Add the SwiftUI iOS app with an empty root view
+- Lint with swift-format and build for generic iOS
+- Ignore local Xcode data and recommend the Swift extension
+
 ### M2 — docs: add agent and engineering scaffolding
 
 - Add agent instructions for scope, git, and commit messages

@@ -19,8 +19,8 @@ What this repo is: [`README.md`](../README.md). Contracts live in this file only
 | Commits | Conventional Commits + commitlint |
 | Agents | `AGENTS.md` + `.cursor/rules/`. Agents do not run mutating git commands unless the user asks |
 | Versions | Minimum OS and dependency pins live in `docs/engineering.md` only |
-| Bundle id | `com.example.betterapp` on both platforms. Replace `com.example` before any store registration |
-| Display name | Better App |
+| Bundle id | `com.example.acme` on both platforms. Replace `com.example` before any store registration |
+| Display name | Acme |
 | Numbering | After this starter ships, app-developer milestones start at **M1** |
 
 The layout below is the finished template.
@@ -46,6 +46,8 @@ better-app/
 
 | Pin | Value | Source |
 | --- | --- | --- |
-| iOS deployment target | 27.0 | Xcode 27.2, [SDK and system requirements](https://developer.apple.com/xcode/system-requirements/) |
+| Xcode | 27.2 | Build 27B52 |
+| Swift | 6.4.2 | Xcode 27.2 toolchain |
+| iOS deployment target | 27.2 | Xcode 27.2 iOS App template |
 | Android `minSdk` | 26 | Android 8.0, set by this starter |
-| Android `compileSdk` and `targetSdk` | 36 | Android 16, [App compatibility in Android](https://developer.android.com/guide/app-compatibility) |
+| Android `compileSdk` and `targetSdk` | 36 | Android 16, [App compatibility in Android](https://developer.apple.com/guide/app-compatibility) |
