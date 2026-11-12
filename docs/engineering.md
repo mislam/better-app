@@ -10,6 +10,8 @@ What this repo is: [`README.md`](../README.md). Contracts live in this file only
 | --- | --- |
 | Layout | `apps/ios/`, `apps/android/`, `docs/`, `.cursor/`. A product adds `shared/` and `tools/` when it has files for them |
 | UI | SwiftUI on iOS, Jetpack Compose on Android. No shared UI toolkit. The starter apps have an empty root view and no screen copy |
+| Local records | When a product adds them: [SwiftData](https://developer.apple.com/documentation/swiftdata) on iOS and [Room](https://developer.android.com/training/data-storage/room) on Android, after a feature spec. The starter does not add a store |
+| Preferences | When a product adds them: SwiftUI `AppStorage` on iOS and [Jetpack DataStore](https://developer.android.com/topic/libraries/architecture/datastore) on Android, after a feature spec. The starter does not add them |
 | Parity | Product behavior lives in `docs/features/*.md`. A change updates the spec and both apps in the same milestone, or **Now** names which platform is behind. The starter ships no feature spec |
 | Shared | Non-UI only, when a product adds it: copy, JSON, fixtures. No Swift or Kotlin sources that both apps compile. The starter does not create `shared/` |
 | Tools | Product build scripts, when a product adds them. Invoked from the app build, not on the device. The starter does not create `tools/` |

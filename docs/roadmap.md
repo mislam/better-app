@@ -31,6 +31,7 @@ The template stops at two apps that build. It ships no screen. A product repo ad
 | Add in the product repo | Where it is recorded |
 | --- | --- |
 | Product screens and behavior | `docs/features/<name>.md`, then iOS and Android |
+| On-device records and preferences | The SwiftData, Room, `AppStorage`, and DataStore choices in `docs/engineering.md`, then a feature spec, then both apps |
 | A native library (SPM, Gradle, or a copied binary) | One pin (version or commit) in `docs/engineering.md`; both apps if both need it |
 | Build scripts that fetch or package assets | `tools/`, invoked from the app build, not at runtime on the device |
 | Large or generated assets | Gitignored; how to produce them is in `tools/` or engineering when the product adds them |
@@ -44,37 +45,47 @@ These better-saas pieces do not get a milestone here: auth secret, Postgres, ema
 
 ## Now
 
-### M3 — `chore: add cursor rules`
+### M3 — `feat(ios): add app`
 
-**Already exists:** **M2** docs. Contracts are only in `docs/engineering.md`. There is no `.cursor/rules/` yet.
+**Already exists:** **M2** docs. No `apps/` yet. No root `package.json`, no CI, and no `.cursor/rules/`. Android is behind until **M4**. Do not add a feature spec or a note elsewhere.
 
-Copy these files from `main` (do not type them from memory):
-
-- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/conventions.mdc`
-- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/changelog.mdc`
-- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/review-staged.mdc`
-- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/review-pr.mdc`
-
-Keep the git, commit-message, secrets, and review procedure from those files. Do not invent a different policy. The five review criteria, the glance verdict, and “agents do not mutate git” stay. Remove Svelte and web-stack examples as specified below.
+The user creates the Xcode project once. The session does not drive the Xcode app. If that project is not on disk yet, stop and ask them to create it, then ask where they saved it. Do not hand-write a project and do not use XcodeGen, Tuist, or `swift package init`.
 
 **Acceptance:**
 
-- [ ] Add `.cursor/rules/conventions.mdc`. Keep **Secrets**, **Commit messages**, and **Git** as copied. In **Paths and file names**, keep lowercase kebab-case for repo paths, delete SvelteKit route names and `src/` TypeScript examples, and state that Swift and Kotlin files use each platform’s usual names. Delete the **Tooling** bullets that name Bun, ESLint, svelte-check, Vitest, or `bun run build`. Do not replace them with iOS or Android commands. Delete Markdown sentences that link `prettier.config.js` or `lint-staged.config.js`. **M4** adds those files and restores the sentences.
-- [ ] Add `.cursor/rules/changelog.mdc` as copied. It already matches this queue: when every **Now** acceptance box is `[x]`, ship in the same change.
-- [ ] Add `.cursor/rules/review-staged.mdc`. Keep the staged-diff procedure, five criteria, fix-now versus leave-it, and glance shape. Delete Svelte, SvelteKit, Bun, Neon, Better Auth, Drizzle, and Vercel examples. Do not replace them with native build commands, keystores, or provisioning profiles. Point **Design fit** at `docs/engineering.md`. A docs-only or rules-only review says in one line that gates were skipped.
-- [ ] Add `.cursor/rules/review-pr.mdc`. Keep the branch procedure and the same five criteria. Delete the `bun` CI command list. CI steps are whatever `.github/workflows/ci.yml` runs once that file exists; until then, note that CI was skipped. Replace web route, auth, and schema examples with the contracts already in `docs/engineering.md`: bundle id and minimum OS.
-- [ ] Add `.cursor/rules/parity.mdc` (`alwaysApply: true`). `docs/features/*.md` is the behavior contract. A change updates the spec and both apps in the same milestone, or **Now** names the platform that is behind. Do not implement behavior that is not in a feature spec.
-- [ ] In `AGENTS.md`, add the review triggers: **review staged** → `review-staged.mdc`, **review branch** / PR → `review-pr.mdc`, **ship milestone** → `changelog.mdc`. Natural language is enough.
+- [ ] The user’s project is Xcode’s iOS App template ([Creating an Xcode project for an app](https://developer.apple.com/documentation/xcode/creating-an-xcode-project-for-an-app)): File > New > Project, iOS, App. Product Name `BetterApp`. Organization Identifier `com.example`. Interface SwiftUI. Language Swift. Storage None. Testing System None. Leave Team unset. They may save it anywhere. Move it under `apps/ios/` if it is not already there. Target and scheme `BetterApp`, display name **Better App**, bundle id `com.example.betterapp`. The root view is empty. Delete sample text the template inserts, including “Hello, world!”. Do not add a title, a platform line, or any other copy.
+- [ ] Do not add a test target. There is no screen behavior to test.
+- [ ] Wire an Apple `swift-format` lint check (not SwiftLint or another third-party formatter). Write the `swift-format` command and the `xcodebuild` build command in the README, including the project, scheme, and destination `generic/platform=iOS`. Build only. No test action and no simulator name.
+- [ ] Append `.gitignore` rules for the user-specific Xcode data and build products this project writes. Commit the project, shared scheme, and sources. Do not add `.cursorignore` for these paths.
+- [ ] Add `.vscode/extensions.json` recommending the official Swift extension (`swiftlang.swift-vscode`). If the marketplace id has changed, use the extension published by the Swift project and record that id.
+- [ ] Record any new version pin (Xcode, Swift, iOS deployment target if it differs from engineering) in `docs/engineering.md` only.
 
-**Non-goals:** no feature spec, app code, hooks, or CI. Do not start **M4**.
+**Non-goals:** no Android project, no feature spec, no third-party native SDK, no SPM packages beyond Apple’s SDKs, no root `package.json`, no CI workflow, no Cursor rules. Do not start **M4**.
 
 **Close-out:** Prepend **M3** under **Shipped**. Move **M4** into **Now**. Delete this **M3** section.
 
 ## Upcoming
 
-### M4 — `chore: add commit hooks`
+### M4 — `feat(android): add app`
 
-**Already exists:** docs and rules. No root `package.json`. No `docs/features/`, `shared/`, or `tools/`. Do not create those paths.
+**Already exists:** the iOS app and its README commands. No root `package.json`, no CI, and no `.cursor/rules/`. Do not rewrite the iOS app.
+
+**Acceptance:**
+
+- [ ] Add a Gradle project under `apps/android/` by running the official Android CLI. Do not open Android Studio. Use the empty Compose activity template ([`android create`](https://developer.android.com/tools/agents/android-cli/commands/create)). Install the CLI from [Download Android CLI](https://developer.android.com/tools/agents/android-cli/download) when it is missing. Do not commit the CLI, and do not run `android init` to vendor an agent skill. Run `android create --list` and use the empty Compose activity template (`empty-activity` in the current docs). Record the template name if that list uses another name for the same template. Create it with `--name="Better App"`, `--application-id=com.example.betterapp`, `--namespace=com.example.betterapp`, `--min-sdk=26`, and `--output=apps/android`. Jetpack Compose only, via the Android Gradle Plugin and AndroidX Compose. Do not add Room, DataStore, a Navigation library, or a ViewModel. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy. `minSdk`, `compileSdk`, and `targetSdk` match `docs/engineering.md`. If the template’s `compileSdk` or `targetSdk` differs, change them to those pins.
+- [ ] Do not add a unit test. There is no screen behavior to test.
+- [ ] Wire `ktlint` as a build-time check, not as a library shipped in the app. Use the Gradle wrapper (`./gradlew`) so **M6** does not install a separate Gradle. Write the wrapper tasks for `ktlint` and the debug build in the README. No test task.
+- [ ] Append `.gitignore` rules for the local machine files and build outputs this project writes, including `local.properties`, `.gradle/`, module `build/` directories, and packaged apk/aab files. Commit the wrapper and project scripts. Do not add `.cursorignore` for these paths.
+- [ ] Add the Kotlin language extension to `.vscode/extensions.json` (marketplace id `fwcd.kotlin` unless that id has moved; then use the current Kotlin language extension and record the id).
+- [ ] Record Kotlin, Android Gradle Plugin, Compose, `ktlint`, and the Android CLI version in `docs/engineering.md` only.
+
+**Non-goals:** no third-party native SDK besides AndroidX Compose and the build-time `ktlint` plugin. No feature spec, no root `package.json`, no CI workflow, no Cursor rules. Do not start **M5**.
+
+**Close-out:** Prepend **M4** under **Shipped**. Move **M5** into **Now**. Delete this **M4** section.
+
+### M5 — `chore: add commit hooks`
+
+**Already exists:** both apps. The README lists their format and build commands. No root `package.json`. No `.cursor/rules/`. No `docs/features/`, `shared/`, or `tools/`. Do not create those paths.
 
 Use **npm** and commit `package-lock.json`. Do not adopt Bun. This is not a JavaScript application.
 
@@ -82,51 +93,17 @@ Use **npm** and commit `package-lock.json`. Do not adopt Bun. This is not a Java
 
 - [ ] Add a root `package.json` whose only job is Git hooks and commitlint. `private: true`. Dev dependencies only: `husky`, `@commitlint/cli`, `@commitlint/config-conventional`, `lint-staged`, and `prettier`. A `prepare` script installs Husky. No app dependencies, no ESLint, no test runner, no Vite.
 - [ ] Add `commitlint.config.js` extending `@commitlint/config-conventional`.
-- [ ] Add Husky `commit-msg` (commitlint) and `pre-commit` (`lint-staged`). `lint-staged` runs Prettier on markdown only, including `.cursor/rules/*.mdc`. Add `prettier.config.js`. In `conventions.mdc`, restore the Markdown sentences for the Prettier and lint-staged files this milestone adds. Do not add a `pre-push` hook. Native builds stay on CI.
+- [ ] Add Husky `commit-msg` (commitlint) and `pre-commit` (`lint-staged`). `lint-staged` runs Prettier on markdown (`*.md`) only. Add `prettier.config.js`. Do not add a `pre-push` hook. Native builds stay on CI. Do not format `*.mdc` yet; **M7** teaches Prettier about those files when the rules exist.
 - [ ] Append `node_modules/` to `.gitignore`. Commit `package-lock.json` and the hook scripts. Ignore any other output Husky generates that its own docs say not to commit. Do not add `.cursorignore` for these paths.
 - [ ] In `README.md`, state that this repository is not a JavaScript app and that the root `package.json` exists for hooks and commitlint. Mention `npm install` so the hooks install.
 
-**Non-goals:** no apps and no GitHub Actions. Do not start **M5**.
-
-**Close-out:** Prepend **M4** under **Shipped**. Move **M5** into **Now**. Delete this **M4** section.
-
-### M5 — `feat(ios): add app`
-
-**Already exists:** hooks. No `apps/` yet. Android is behind until **M6**. Do not add a feature spec or a note elsewhere.
-
-**Acceptance:**
-
-- [ ] Add an Xcode project under `apps/ios/` with target and scheme `BetterApp`, display name **Better App**, and bundle id `com.example.betterapp`. SwiftUI only. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy.
-- [ ] Do not add a test target. There is no screen behavior to test.
-- [ ] Wire an Apple `swift-format` lint check (not SwiftLint or another third-party formatter). Write the `swift-format` command and the `xcodebuild` build command in the README, including the project, scheme, and destination `generic/platform=iOS`. Build only. No test action and no simulator name.
-- [ ] Append `.gitignore` rules for the user-specific Xcode data and build products this project writes. Commit the project, shared scheme, and sources. Do not add `.cursorignore` for these paths.
-- [ ] Add `.vscode/extensions.json` recommending the official Swift extension (`swiftlang.swift-vscode`). If the marketplace id has changed, use the extension published by the Swift project and record that id.
-- [ ] Record any new version pin (Xcode, Swift, iOS deployment target if it differs from engineering) in `docs/engineering.md` only.
-
-**Non-goals:** no Android project, no feature spec, no third-party native SDK, no SPM packages beyond Apple’s SDKs, no CI workflow yet. Do not start **M6**.
+**Non-goals:** no app changes, no GitHub Actions, no Cursor rules. Do not start **M6**.
 
 **Close-out:** Prepend **M5** under **Shipped**. Move **M6** into **Now**. Delete this **M5** section.
 
-### M6 — `feat(android): add app`
+### M6 — `ci: build both apps`
 
-**Already exists:** the iOS app and its README commands. Do not rewrite the iOS app.
-
-**Acceptance:**
-
-- [ ] Add a Gradle project under `apps/android/` with application id and namespace `com.example.betterapp`. Jetpack Compose only, via the Android Gradle Plugin and AndroidX Compose. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy. `minSdk`, `compileSdk`, and `targetSdk` match `docs/engineering.md`.
-- [ ] Do not add a unit test. There is no screen behavior to test.
-- [ ] Wire `ktlint` as a build-time check, not as a library shipped in the app. Use the Gradle wrapper (`./gradlew`) so **M7** does not install a separate Gradle. Write the wrapper tasks for `ktlint` and the debug build in the README. No test task.
-- [ ] Append `.gitignore` rules for the local machine files and build outputs this project writes, including `local.properties`, `.gradle/`, module `build/` directories, and packaged apk/aab files. Commit the wrapper and project scripts. Do not add `.cursorignore` for these paths.
-- [ ] Add the Kotlin language extension to `.vscode/extensions.json` (marketplace id `fwcd.kotlin` unless that id has moved; then use the current Kotlin language extension and record the id).
-- [ ] Record Kotlin, Android Gradle Plugin, Compose, and `ktlint` pins in `docs/engineering.md` only.
-
-**Non-goals:** no third-party native SDK besides AndroidX Compose and the build-time `ktlint` plugin. No feature spec. No CI workflow yet. Do not start **M7**.
-
-**Close-out:** Prepend **M6** under **Shipped**. Move **M7** into **Now**. Delete this **M6** section.
-
-### M7 — `ci: build both apps`
-
-**Already exists:** both apps. README already lists the local format and build commands from **M5** and **M6**. No `.github/workflows/` yet.
+**Already exists:** both apps and commit hooks. README already lists the local format and build commands from **M3** and **M4**. No `.github/workflows/` yet.
 
 **Acceptance:**
 
@@ -135,18 +112,45 @@ Use **npm** and commit `package-lock.json`. Do not adopt Bun. This is not a Java
 - [ ] On `ubuntu-latest`, run the `ktlint` and Gradle build tasks already written in the README.
 - [ ] Keep the README command list equal to the commands the workflow runs.
 
-**Non-goals:** no tests, no new product behavior, no `pre-push` hook, no vendor SDK, no extra jobs. Do not start **M8**.
+**Non-goals:** no tests, no new product behavior, no `pre-push` hook, no vendor SDK, no extra jobs, no Cursor rules. Do not start **M7**.
+
+**Close-out:** Prepend **M6** under **Shipped**. Move **M7** into **Now**. Delete this **M6** section.
+
+### M7 — `chore: add cursor rules`
+
+**Already exists:** both apps, commit hooks, and CI. README commands match `.github/workflows/ci.yml`. There is no `.cursor/rules/` yet.
+
+Copy these files from `main` (do not type them from memory):
+
+- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/conventions.mdc`
+- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/changelog.mdc`
+- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/review-staged.mdc`
+- `https://raw.githubusercontent.com/mislam/better-saas/main/.cursor/rules/review-pr.mdc`
+
+Keep the git, commit-message, secrets, and review procedure from those files. Do not invent a different policy. The five review criteria, the glance verdict, and “agents do not mutate git” stay. Remove Svelte and web-stack examples as specified below. Where those files name Bun, ESLint, Vitest, or `bun` CI steps, name the commands this repo already runs.
+
+**Acceptance:**
+
+- [ ] Add `.cursor/rules/conventions.mdc`. Keep **Secrets**, **Commit messages**, and **Git** as copied. In **Paths and file names**, keep lowercase kebab-case for repo paths, delete SvelteKit route names and `src/` TypeScript examples, and state that Swift and Kotlin files use each platform’s usual names. Replace the **Tooling** bullets that name Bun, ESLint, svelte-check, Vitest, or `bun run build` with the commands already in the README and in `.github/workflows/ci.yml`: the Swift format check, the `xcodebuild` build, `ktlint`, and the Gradle debug build. State that the root `package.json` is npm for hooks and commitlint, not the app. Do not add a test command. Keep the Markdown sentences that link `prettier.config.js` and `lint-staged.config.js`.
+- [ ] Teach Prettier and lint-staged to format `*.mdc` with the Markdown parser, the way better-saas did when its rules landed. Markdown (`*.md`) stays as **M5** configured it.
+- [ ] Add `.cursor/rules/changelog.mdc` as copied. It already matches this queue: when every **Now** acceptance box is `[x]`, ship in the same change.
+- [ ] Add `.cursor/rules/review-staged.mdc`. Keep the staged-diff procedure, five criteria, fix-now versus leave-it, and glance shape. Delete Svelte, SvelteKit, Bun, Neon, Better Auth, Drizzle, and Vercel examples. Do not add keystores or provisioning profiles. Point **Design fit** at `docs/engineering.md`. When the staged diff touches `apps/`, the root hook package, the lockfile, or CI, run the README commands that apply to that diff. A docs-only or rules-only review says in one line that gates were skipped.
+- [ ] Add `.cursor/rules/review-pr.mdc`. Keep the branch procedure and the same five criteria. Replace the `bun` CI command list with the steps `.github/workflows/ci.yml` runs. **🔴** if a required step fails. A docs-only or rules-only review notes that gates were skipped. Replace web route, auth, and schema examples with the contracts already in `docs/engineering.md`: bundle id and minimum OS.
+- [ ] Add `.cursor/rules/parity.mdc` (`alwaysApply: true`). `docs/features/*.md` is the behavior contract. A change updates the spec and both apps in the same milestone, or **Now** names the platform that is behind. Do not implement behavior that is not in a feature spec.
+- [ ] In `AGENTS.md`, add the review triggers: **review staged** → `review-staged.mdc`, **review branch** / PR → `review-pr.mdc`, **ship milestone** → `changelog.mdc`. Natural language is enough. Name the blocking gates that already exist: pre-commit (`lint-staged`), commitlint, and the CI commands. There is no `pre-push` hook.
+
+**Non-goals:** no feature spec, no app behavior changes, no new CI jobs. Do not start **M8**.
 
 **Close-out:** Prepend **M7** under **Shipped**. Move **M8** into **Now**. Delete this **M7** section.
 
 ### M8 — `docs: mark starter ready`
 
-**Already exists:** both apps, hooks, and CI. **Shipped** lists **M1–M7**.
+**Already exists:** both apps, hooks, CI, and Cursor rules. **Shipped** lists **M1–M7**.
 
 **Acceptance:**
 
 - [ ] Update `README.md` so a new clone is: clone the repo, `npm install`, then the same commands CI runs (Swift format check, `xcodebuild` build, `ktlint`, Gradle build).
-- [ ] In `docs/engineering.md`, state that a product copies this repo, renames the apps, and keeps `docs/`, `AGENTS.md`, and `.cursor/rules/`. The template stops at two apps that build and ships no screen. Further product work is recorded in that repo’s `docs/engineering.md` and `docs/features/*.md` before code. The next milestone in the copied app is **M1**. Do not add the better-saas web stack (auth secret, Postgres, email auth, Vercel, Svelte skills, Svelte MCP).
+- [ ] In `docs/engineering.md`, state that a product copies this repo, renames the apps, and keeps `docs/`, `AGENTS.md`, and `.cursor/rules/`. The template stops at two apps that build and ships no screen. Keep the local-records and preferences rows. Further product work is recorded in that repo’s `docs/engineering.md` and `docs/features/*.md` before code. The next milestone in the copied app is **M1**. Do not add the better-saas web stack (auth secret, Postgres, email auth, Vercel, Svelte skills, Svelte MCP).
 - [ ] In `AGENTS.md`, remove the starter-only ban that blocks product work through **M8**. Point ongoing work at **Now**. This template does not grow product features in place; a product repo does.
 - [ ] Clear `CHANGELOG.md` **Shipped** so it is empty (`_(none yet)_`). Remove every starter **M1–M8** entry.
 - [ ] Replace this file with the empty queue below. Delete **How to run a milestone**, **Out of scope**, every milestone card, and **Contracts** if it is still here.
