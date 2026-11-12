@@ -11,8 +11,8 @@ This file is the build queue for the starter. A session with no other history do
 - Do only the milestone under **Now**. Do not implement **Upcoming** or **Later**.
 - Do not invent product features, vendor SDKs, or an asset pipeline. See [Out of scope](#out-of-scope).
 - Do not add ignore rules, commands, or config for a tool this milestone does not introduce. Put generated paths in `.gitignore`, using the paths that tool writes. Cursor already skips gitignored files, so do not copy those rules into `.cursorignore`. Add `.cursorignore` only for a file Cursor would still index.
-- If this file still has a [Contracts](#contracts) section, follow it. **M2** moves that section into `docs/engineering.md` and deletes it here. After that, contracts live only in `docs/engineering.md`.
-- Until **M2** has landed, this file is the only agent instruction. From **M2** on, also read `AGENTS.md` and `docs/engineering.md`.
+- Contracts live in `docs/engineering.md`.
+- Read `AGENTS.md` and `docs/engineering.md` with this file.
 - **Already exists** on a card is the baseline. If the repo disagrees, trust the repo for work that is already done. Do not redo it and do not recreate this queue.
 - Mark each acceptance box `[x]` when that item is done. Close-out is not a checkbox.
 - One commit. Subject is the Conventional Commits subject on the milestone. One change: subject only. More than one change: a blank line, then `- ` bullets. Each bullet is an imperative sentence. Do not mention changelog entries or advancing **Now** in the commit body.
@@ -23,44 +23,6 @@ This file is the build queue for the starter. A session with no other history do
   3. Stop. Do not start the next milestone.
 - **M1** creates `CHANGELOG.md` with only the **M1** shipped entry. That is the starter history, not an empty product changelog. **M2–M7** prepend their own entries. **M8** clears **Shipped** and replaces this file with an empty Now / Upcoming / Later page. Starter ids **M1–M8** then exist only in git history.
 - If **Now** says there is no open milestone, the starter is finished. Do not invent a milestone.
-
-## Contracts
-
-**M2** copies this section into `docs/engineering.md` and then deletes it from this file. Until that happens, change a row only by editing `docs/engineering.md` and this section together. After the copy, edit `docs/engineering.md` only.
-
-| Topic | Decision |
-| --- | --- |
-| Layout | `apps/ios/`, `apps/android/`, `docs/`, `.cursor/`. A product adds `shared/` and `tools/` when it has files for them |
-| UI | SwiftUI on iOS, Jetpack Compose on Android. No shared UI toolkit. The starter apps have an empty root view and no screen copy |
-| Parity | Product behavior lives in `docs/features/*.md`. A change updates the spec and both apps in the same milestone, or **Now** names which platform is behind. The starter ships no feature spec |
-| Shared | Non-UI only, when a product adds it: copy, JSON, fixtures. No Swift or Kotlin sources that both apps compile. The starter does not create `shared/` |
-| Tools | Product build scripts, when a product adds them. Invoked from the app build, not on the device. The starter does not create `tools/` |
-| Naming | Repo paths: lowercase kebab-case. Swift and Kotlin files follow each platform’s usual names |
-| Commits | Conventional Commits + commitlint |
-| Agents | `AGENTS.md` + `.cursor/rules/`. Agents do not run mutating git commands unless the user asks |
-| Versions | Minimum OS and dependency pins live in `docs/engineering.md` only |
-| Bundle id | `com.example.betterapp` on both platforms. Replace `com.example` before any store registration |
-| Display name | Better App |
-| Numbering | After this starter ships, app-developer milestones start at **M1** |
-
-Target layout:
-
-```text
-better-app/
-  README.md
-  AGENTS.md
-  CHANGELOG.md
-  docs/
-    engineering.md
-    roadmap.md
-  apps/ios/
-  apps/android/
-  .cursor/rules/
-  .github/workflows/
-  package.json
-```
-
-`.gitignore` lists repo junk and, later, the paths a new tool writes. Do not commit large binaries, secrets, or local SDK drops; add those patterns with the change that introduces the files. `.cursorignore` is not a second copy of `.gitignore`.
 
 ## Out of scope
 
@@ -81,26 +43,6 @@ These better-saas pieces do not get a milestone here: auth secret, Postgres, ema
 **M8** folds this boundary into `docs/engineering.md` and deletes this section.
 
 ## Now
-
-### M2 — `docs: add agent and engineering scaffolding`
-
-**Already exists:** `README.md`, `LICENSE`, `.gitignore`, `.gitattributes`, `CHANGELOG.md` with **M1** under **Shipped**, and this roadmap with **Now** = **M2**. There is no `.cursorignore`.
-
-**Acceptance:**
-
-- [ ] Add `AGENTS.md` for Cursor and coding agents. Point humans at `README.md`. Link **Now** in this file, **Upcoming** / **Later**, `CHANGELOG.md`, and `docs/engineering.md`. State that work stays on **Now** unless the user asks for more.
-- [ ] In `AGENTS.md`, set git to read-only unless the user’s current message explicitly requests that command. Allowed inspection: `git status`, `git diff`, `git diff --cached`, `git log`, `git show`, and listing branches. Mutating commands (`git add`, `git commit`, `git push`, and the rest) wait for an explicit request. Staging is the user’s job. When asked for a commit message, output text only unless they also asked to commit.
-- [ ] In `AGENTS.md`, state the commit-message shape: Conventional Commits, imperative lowercase summary, no trailing period. One change is the subject only. More than one change is a blank line and `- ` bullets. Do not mention changelog entries or advancing **Now** in the body.
-- [ ] In `AGENTS.md`, forbid product features, vendor SDKs, and asset pipelines while this roadmap still lists starter milestones.
-- [ ] Add `docs/engineering.md` with the [Contracts](#contracts) table, the target layout, display name **Better App**, and bundle id `com.example.betterapp`. The layout is the finished template. Do not create paths from that tree that this milestone does not list. Then delete the **Contracts** section from this file.
-- [ ] In `docs/engineering.md`, write the iOS deployment target from Apple’s published default for the current Xcode release, not from a local Xcode install. Write Android `minSdk` 26. Write `compileSdk` and `targetSdk` from the current stable API on developer.android.com. Record the digits and the page title and URL. Do not leave the word “current” in place of a number.
-- [ ] Add `docs/engineering.md` and `AGENTS.md` to the README doc index.
-
-**Non-goals:** no Cursor rules, feature spec, app code, hooks, or CI. Do not start **M3**.
-
-**Close-out:** Prepend **M2** under **Shipped**. Move **M3** into **Now**. Delete this **M2** section.
-
-## Upcoming
 
 ### M3 — `chore: add cursor rules`
 
@@ -128,6 +70,8 @@ Keep the git, commit-message, secrets, and review procedure from those files. Do
 
 **Close-out:** Prepend **M3** under **Shipped**. Move **M4** into **Now**. Delete this **M3** section.
 
+## Upcoming
+
 ### M4 — `chore: add commit hooks`
 
 **Already exists:** docs and rules. No root `package.json`. No `docs/features/`, `shared/`, or `tools/`. Do not create those paths.
@@ -152,7 +96,7 @@ Use **npm** and commit `package-lock.json`. Do not adopt Bun. This is not a Java
 
 **Acceptance:**
 
-- [ ] Add an Xcode project under `apps/ios/` with target and scheme `BetterApp`, display name **Better App**, and bundle id `com.example.betterapp`. SwiftUI only. The root view is empty. Delete sample text the template inserts, such as “Hello, world!”. Do not add a title, a platform line, or any other copy.
+- [ ] Add an Xcode project under `apps/ios/` with target and scheme `BetterApp`, display name **Better App**, and bundle id `com.example.betterapp`. SwiftUI only. The root view is empty. Delete sample text the template inserts. Do not add a title, a platform line, or any other copy.
 - [ ] Do not add a test target. There is no screen behavior to test.
 - [ ] Wire an Apple `swift-format` lint check (not SwiftLint or another third-party formatter). Write the `swift-format` command and the `xcodebuild` build command in the README, including the project, scheme, and destination `generic/platform=iOS`. Build only. No test action and no simulator name.
 - [ ] Append `.gitignore` rules for the user-specific Xcode data and build products this project writes. Commit the project, shared scheme, and sources. Do not add `.cursorignore` for these paths.
